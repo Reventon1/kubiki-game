@@ -1,4 +1,4 @@
-let matrix = 55;
+let matrix = 2;
 let countKubiks = matrix * matrix;
 let arrayKubiks = [];
 let arrayColors = [];
@@ -13,16 +13,16 @@ document.getElementById('kubiks').style.width = matrix * 100 + 22 * matrix + 'px
 function randomKubiks() {
     for (let i = 0; i < countKubiks / 2; i++) {
         let color = {
-            red: Math.round(Math.random()*255),
-            green: Math.round(Math.random()*255),
-            blue: Math.round(Math.random()*255)
+            red: Math.round(Math.random() * 255),
+            green: Math.round(Math.random() * 255),
+            blue: Math.round(Math.random() * 255),
         }
-
         arrayColors.push(color);
         arrayColors.push(color);
+        
     }
 
-    arrayColors = arrayColors.sort(function() {
+    arrayColors = arrayColors.sort(function(){
         return Math.random() - 0.5;
     });
 
@@ -34,12 +34,13 @@ function randomKubiks() {
             blue: arrayColors[i].blue,
             view: false
         }
-
         arrayKubiks.push(kubik);
     }
 }
 
 randomKubiks();
+
+arrayKubiks = [...arrayKubiks, ...arrayKubiks];
 
 console.log(arrayKubiks);
 
@@ -50,8 +51,9 @@ function renderKubiks(arrayKubiks) {
             div.id = 'kubik_' + kubik.id;
             div.className = 'kubik';
             div.onclick = event => kubikClick(event);
-            document.getElementById('kubiks').append(div);
+            document.getElementById('kubiks').append(div); 
         }
+
 
         renderKubik(kubik);
     });
@@ -59,34 +61,31 @@ function renderKubiks(arrayKubiks) {
 
 renderKubiks(arrayKubiks);
 
-function kubikClick(event){
-    let kubikId= Number(event.target.id.slice(6));
 
+function kubikClick(event) {
+    let kubikId = (Number(event.target.id.slice(6)));
     let isRollback = false;
     let isForward = false;
-
     arrayKubiks.map(kubik => {
-        if(kubik.id === kubikId) {
+        if (kubik.id === kubikId) {
 
             if (firstKubik) {
-                if (firstKubik.red === kubik.red &&
-                    firstKubik.green === kubik.green &&
-                    firstKubik.blue === kubik.blue) {
-                        isForward = true;
-                    }
+                if (firstKubik.red === kubik.red && firstKubik.green === kubik.green && firstKubik.blue === kubik.blue) {
+                    isForward = true;
+                }
 
-                    else {
-                        isRollback = true;
-                    }
+                else {
+                    isRollback = true;
+                }
             }
 
-            else {
-                firstKubik = kubik;
-            }
+
+            else (firstKubik) = kubik;
 
             kubik.view = true;
         }
     });
+
 
     renderKubiks(arrayKubiks);
 
@@ -94,8 +93,7 @@ function kubikClick(event){
         const firstId = firstKubik.id;
         firstKubik = null;
         countFailed += 1;
-        console.log('Вы совершили ' + 
-        countFailed + ' неудачных попыток.');
+        console.log('Вы совершили ' + countFailed + 'неудачных попыток');
 
         setTimeout(() => {
             arrayKubiks.map(kubik => {
@@ -108,23 +106,22 @@ function kubikClick(event){
         }, 500);
     }
 
-    if (isForward) {   
+    if (isForward) {
 
         firstKubik = null;
+
         isEnd = true;
 
         arrayKubiks.map(kubik => {
-            if (!kubik.view) {
-                isEnd = false;
-            }
+           if (!kubik.view) {
+               isEnd = false;
+           } 
         });
 
         if (isEnd) {
-            console.log('Игра окончена с ' + countFailed + ' неудачными попытками.');
-
-            const result = confirm('Еще разок?');
+            console.log ('Игра окончена с ' + countFailed + ' неудачными попытками');
+            const result = confirm('Ещё разок?');
             if (result) {
-
                 arrayColors = [];
                 arrayKubiks = [];
 
@@ -138,21 +135,24 @@ function kubikClick(event){
         }
 
         else {
-            console.log('Вы молодец, продолжаем!');
+            console.log ('Вы молодец, продолжаем!')
         }
 
         renderKubiks(arrayKubiks);
     }
 }
 
+
 function renderKubik(kubik) {
     if (kubik.view) {
-        document.getElementById('kubik_' + kubik.id).style.backgroundColor =
-        'rgb(' + kubik.red + ',' + kubik.green + ',' + kubik.blue + ')';
+        document.getElementById('kubik_' + kubik.id).style.backgroundColor = 'rgb(' + kubik.red + ',' + kubik.green + ',' + kubik.blue + ')';
     }
-
+    
     else {
-        document.getElementById('kubik_' + kubik.id).style.backgroundColor =
-        'rgb(0,0,0)';
+        document.getElementById('kubik_' + kubik.id).style.backgroundColor = 'rgb(0,0,0)';
     }
 }
+
+// function mixarr(arrayKubiks) {
+//     return arrayKubiks.map(i => [Math.random(),i]).sort().map(i=i[1]); 
+// }
